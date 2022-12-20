@@ -1,4 +1,5 @@
-![Banner](https://github.com/CameLys/ELYSCHAIN/blob/main/assets/images/NAME_IMAGES_PROJECT)
+![Banner](https://github.com/CameLys/ELYSCHAIN/blob/main/Assets/images/pexels.jpg)
+[![CameLys's GitHub Banner](/Assets/images/ELYS.png)](https://eLysiane.eu)
 # ELYSCHAIN
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/CameLys/ELYSCHAIN)
 [![version](https://img.shields.io/badge/version-1.0-blue.svg)](https://github.com/CameLys/ELYSCHAIN)
