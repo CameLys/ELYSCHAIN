@@ -27,6 +27,8 @@ class Blockchain {
     this.difficulty = 4;
     this.pendingTransactions = [];
     this.miningReward = 100;
+    this.pseudonymMap = new Map();
+    ...
   }
 
   createGenesisBlock() {
@@ -37,7 +39,7 @@ class Blockchain {
     return this.chain[this.chain.length - 1];
   }
 
-  minePendingTransactions(miningRewardAddress) {
+  minePendingTransactions(miningRewardsAddress) {
     const block = new Block(this.chain.length, Date.now(), this.pendingTransactions, this.getLatestBlock().hash);
     block.mineBlock(this.difficulty);
 
@@ -50,26 +52,35 @@ class Blockchain {
   }
 
   createTransaction(transaction) {
-    this.pendingTransactions.push(transaction);
-  }
+  const fromPseudonym = this.getPseudonym(transaction.fromAddress);
+  const toPseudonym = this.getPseudonym(transaction.toAddress);
+
+  transaction.fromAddress = fromPseudonym || transaction.fromAddress;
+  transaction.toAddress = toPseudonym || transaction.toAddress;
+
+  this.pendingTransactions.push(transaction);
+}
+
 
   getBalanceOfAddress(address) {
-    let balance = 0;
+  const pseudonym = this.getPseudonym(address);
+  let balance = 0;
 
-    for (const block of this.chain) {
-      for (const trans of block.transactions) {
-        if (trans.fromAddress === address) {
-          balance -= trans.amount;
-        }
+  for (const block of this.chain) {
+    for (const trans of block.transactions) {
+      if (trans.fromAddress === address || trans.fromAddress === pseudonym) {
+        balance -= trans.amount;
+      }
 
-        if (trans.toAddress === address) {
-          balance += trans.amount;
-        }
+      if (trans.toAddress === address || trans.toAddress === pseudonym) {
+        balance += trans.amount;
       }
     }
-
-    return balance;
   }
+
+  return balance;
+}
+
 
   isChainValid() {
     for (let i = 1; i < this.chain.length; i++) {
@@ -97,8 +108,8 @@ module.exports = {
 
   // Mélanger les transactions en utilisant un algorithme de mélange de transactions
   mixTransactions() {
-    // TODO: implémenter l'algorithme de mélange de transactions
-  }
+  this.pendingTransactions = _.shuffle(this.pendingTransactions);
+}
 
   // Ajouter un nouveau pseudonyme à la carte des pseudonymes
   addPseudonym(publicAddress, pseudonym) {
