@@ -1,6 +1,24 @@
 const crypto = require('crypto');
 const _ = require('lodash');
 
+class Transaction {
+  constructor(fromAddress, toAddress, amount, timestamp, signature) {
+    this.fromAddress = fromAddress;
+    this.toAddress = toAddress;
+    this.amount = amount;
+    this.timestamp = timestamp;
+    this.signature = signature;
+  }
+
+  signTransaction(privateKey) {
+    // TODO: implémenter la signature de transaction à l'aide de la clé privée de l'expéditeur
+  }
+
+  verifySignature(publicKey) {
+    // TODO: implémenter la vérification de signature à l'aide de la clé publique de l'expéditeur
+  }
+}
+
 class Block {
   constructor(index, timestamp, data, previousHash) {
     this.index = index;
@@ -100,24 +118,6 @@ class Blockchain {
     return true;
   }
 }
-  
-  class Transaction {
-  constructor(fromAddress, toAddress, amount, timestamp, signature) {
-    this.fromAddress = fromAddress;
-    this.toAddress = toAddress;
-    this.amount = amount;
-    this.timestamp = timestamp;
-    this.signature = signature;
-  }
-
-  signTransaction(privateKey) {
-    // TODO: implémenter la signature de transaction à l'aide de la clé privée de l'expéditeur
-  }
-
-  verifySignature(publicKey) {
-    // TODO: implémenter la vérification de signature à l'aide de la clé publique de l'expéditeur
-  }
-}
 
 module.exports = {
   Blockchain,
@@ -136,7 +136,11 @@ module.exports = {
   }
 
   // Obtenir le pseudonyme associé à une adresse publique
-  getPseudonym(publicAddress) {
-    return this.pseudonymMap.get(publicAddress);
+  getPseudonym(address) {
+    let pseudonym = this.pseudonymMap.get(address);
+    if (!pseudonym) {
+      pseudonym = this.generatePseudonym();
+      this.pseudonymMap.set(address, pseudonym);
+    }
+    return pseudonym;
   }
-}
