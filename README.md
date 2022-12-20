@@ -1,2 +1,0 @@
-# ELYSCHAIN
-My Blockchain
