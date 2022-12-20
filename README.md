@@ -1,6 +1,11 @@
-![Banner](https://github.com/CameLys/ELYSCHAIN/blob/main/Assets/images/pexels.jpg)
 [![CameLys's GitHub Banner](/Assets/images/ELYS.png)](https://eLysiane.eu)
 # ELYSCHAIN
+  <br>
+
+<div  align="center">
+
+[![ELYS TOKEN](https://img.shields.io/badge/ELYS%20TOKEN-pink.svg)](https://app.bogged.finance/swap?tokenIn=BNB&tokenOut=0xdf31C98e74cf5aD09312f15D454C3C5ac27BcF36&embed=1)
+  <br>
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/CameLys/ELYSCHAIN)
 [![version](https://img.shields.io/badge/version-1.0-blue.svg)](https://github.com/CameLys/ELYSCHAIN)
 [![Discord](https://img.shields.io/discord/979349329909264414?label=Discord&logo=Discord)](http://discord.gg/xpaxKBEx9t)
@@ -13,9 +18,8 @@
 [![Tornado](https://img.shields.io/badge/NOVA-Tornado%20Cash-brightgreen.svg)](https://img.shields.io/badge/-available%20/09/2022-lightgrey)
 <br>
 [![visitor badge](https://visitor-badge.laobi.icu/badge?page_id=CameLys.eLys&left_color=gray&right_color=purple&left_text=New%20Visitors%20Today)](https://github.com/CameLys)
+</div >
 <br>
-
-[![ELYS TOKEN](https://img.shields.io/badge/ELYS%20TOKEN-pink.svg)](https://app.bogged.finance/swap?tokenIn=BNB&tokenOut=0xdf31C98e74cf5aD09312f15D454C3C5ac27BcF36&embed=1)
 
 ## Start Project
 
