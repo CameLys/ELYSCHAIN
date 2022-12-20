@@ -22,7 +22,13 @@
 <br>
 
 ## Start Project
+<div  align="center">
 
+```
+npm install crypto lodash
+```
+
+</div>
 
 ## Supporters
 [![Stargazers repo roster for @CameLys/ELYSCHAIN](https://reporoster.com/stars/dark/CameLys/ELYSCHAIN)](https://github.com/CameLys/ELYSCHAIN/stargazers)
