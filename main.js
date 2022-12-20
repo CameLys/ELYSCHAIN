@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const _ = require('lodash');
 
 class Block {
   constructor(index, timestamp, data, previousHash) {
