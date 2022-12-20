@@ -99,6 +99,24 @@ class Blockchain {
     return true;
   }
 }
+  
+  class Transaction {
+  constructor(fromAddress, toAddress, amount, timestamp, signature) {
+    this.fromAddress = fromAddress;
+    this.toAddress = toAddress;
+    this.amount = amount;
+    this.timestamp = timestamp;
+    this.signature = signature;
+  }
+
+  signTransaction(privateKey) {
+    // TODO: implémenter la signature de transaction à l'aide de la clé privée de l'expéditeur
+  }
+
+  verifySignature(publicKey) {
+    // TODO: implémenter la vérification de signature à l'aide de la clé publique de l'expéditeur
+  }
+}
 
 module.exports = {
   Blockchain,
