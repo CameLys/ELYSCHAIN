@@ -10,14 +10,17 @@ class Transaction {
     this.signature = signature;
   }
 
-  signTransaction(privateKey) {
-    // TODO: implémenter la signature de transaction à l'aide de la clé privée de l'expéditeur
-  }
+ signTransaction(privateKey) {
+  const data = this.fromAddress + this.toAddress + this.amount + this.timestamp;
+  this.signature = crypto.sign('sha256', Buffer.from(data), privateKey).toString('hex');
+}
+
 
   verifySignature(publicKey) {
-    // TODO: implémenter la vérification de signature à l'aide de la clé publique de l'expéditeur
-  }
+  const data = this.fromAddress + this.toAddress + this.amount + this.timestamp;
+  return crypto.verify('sha256', Buffer.from(data), publicKey, this.signature);
 }
+
 
 class Block {
   constructor(index, timestamp, data, previousHash) {
@@ -33,11 +36,12 @@ class Block {
   }
 
   mineBlock(difficulty) {
-    while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
-      this.nonce++;
-      this.hash = this.calculateHash();
-    }
-  }
+  if (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
+    this.nonce++;
+    this.hash = this.calculateHash();
+    this.mineBlock(difficulty);
+   }
+ }
 }
 
 class Blockchain {
