@@ -4,7 +4,7 @@
 
 <div  align="center">
 
-[![ELYS TOKEN](https://img.shields.io/badge/ELYS%20TOKEN-pink.svg)](https://app.bogged.finance/swap?tokenIn=BNB&tokenOut=0xdf31C98e74cf5aD09312f15D454C3C5ac27BcF36&embed=1)
+[![AEX03](https://img.shields.io/badge/AEX03-pink.svg)](https://github.com/AeX03)
   <br>
 [![license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/CameLys/ELYSCHAIN)
 [![version](https://img.shields.io/badge/version-1.0-blue.svg)](https://github.com/CameLys/ELYSCHAIN)
