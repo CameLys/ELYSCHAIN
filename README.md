@@ -28,6 +28,10 @@
 npm install crypto lodash
 ```
 
+```
+node main.js
+```
+
 </div>
 
 ## Supporters
