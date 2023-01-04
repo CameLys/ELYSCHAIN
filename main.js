@@ -148,3 +148,53 @@ module.exports = {
     }
     return pseudonym;
   }
+// Ajout d'une fonction pour vérifier si un pseudonyme est déjà utilisé ou non
+  isPseudonymUsed(pseudonym) {
+    return this.pseudonymMap.has(pseudonym);
+  }
+
+  // Ajout d'une fonction pour récupérer les transactions associées à une adresse ou à un pseudonyme donné
+  getTransactionsForAddress(address) {
+    const pseudonym = this.getPseudonym(address);
+    const transactions = [];
+
+    for (const block of this.chain) {
+      for (const trans of block.transactions) {
+        if (trans.fromAddress === address || trans.toAddress === address || trans.fromAddress === pseudonym || trans.toAddress === pseudonym) {
+          transactions.push(trans);
+        }
+      }
+    }
+
+    return transactions;
+  }
+
+  // Ajout d'une fonction pour vérifier que les transactions en attente respectent certaines règles de base
+  validatePendingTransactions() {
+    for (const trans of this.pendingTransactions) {
+      const balance = this.getBalanceOfAddress(trans.fromAddress);
+      if (trans.amount > balance) {
+        throw new Error(`Transaction error: address ${trans.fromAddress} has insufficient funds (${balance}).`);
+      }
+    }
+  }
+
+  // Ajout d'une fonction pour visualiser la chaîne de blocs sous forme de graphique
+  renderChain() {
+    let graph = "";
+    for (const block of this.chain) {
+      graph += `Block ${block.index}:\n`;
+      graph += `  Previous hash: ${block.previousHash}\n`;
+      graph += `  Hash: ${block.hash}\n`;
+      graph += `  Timestamp: ${block.timestamp}\n`;
+      graph += `  Data:\n`;
+      for (const trans of block.transactions) {
+        graph += `    - From: ${trans.fromAddress}\n`;
+        graph += `      To: ${trans.toAddress}\n`;
+        graph += `      Amount: ${trans.amount}\n`;
+        graph += `      Timestamp: ${trans.timestamp}\n`;
+        graph += `      Signature: ${trans.signature}\n`;
+      }
+    }
+    return graph;
+  }
