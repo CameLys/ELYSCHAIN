@@ -7,7 +7,7 @@ async function sendRequestViaProxy(url) {
     const response = await rp({
       method: 'GET',
       uri: url,
-      proxy: 'socks5://localhost:9050',
+      proxy: 'socks5://localhost:9050', // Ajout des proxy de TOR
       timeout: 10000
     });
     console.log(response);
@@ -16,7 +16,7 @@ async function sendRequestViaProxy(url) {
   }
 }
 
-sendRequestViaProxy('https://example.com');
+sendRequestViaProxy('https://tor.com'); // Ajout de l'url de proxy de TOR
 
 class Transaction {
   constructor(fromAddress, toAddress, amount, timestamp, signature) {
