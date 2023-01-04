@@ -1,6 +1,11 @@
 const crypto = require('crypto');
 const _ = require('lodash');
 const rp = require('request-promise-native');
+const net = require('net');
+const { EventEmitter } = require('events');
+const readline = require('readline');
+const P2P = require('./p2p');
+const WebSocket = require('ws');
 
 async function sendRequestViaProxy(url) {
   try {
@@ -391,3 +396,117 @@ module.exports = {
     };
     this.pendingTransactions.push(pseudonymTransaction);
   }
+class P2P extends EventEmitter {
+  constructor(blockchain) {
+    super();
+    this.blockchain = blockchain;
+    this.sockets = [];
+  }
+
+  listen() {
+    const server = net.createServer(socket => this.connectSocket(socket));
+    server.listen(process.env.P2P_PORT || 5000);
+  }
+
+  connectSocket(socket) {
+    this.sockets.push(socket);
+    this.messageHandler(socket);
+    this.sendChain(socket);
+  }
+
+  connectToPeers(newPeers) {
+    newPeers.forEach(peer => {
+      const socket = net.createConnection(peer.port, peer.host);
+      this.connectSocket(socket);
+    });
+  }
+
+  messageHandler(socket) {
+    socket.on('data', data => {
+      const message = JSON.parse(data);
+      this.blockchain.replaceChain(message);
+    });
+  }
+
+  sendChain(socket) {
+    socket.write(JSON.stringify(this.blockchain.chain));
+  }
+
+  syncChains() {
+    this.sockets.forEach(socket => this.sendChain(socket));
+  }
+}
+
+module.exports = P2P;
+
+class Peer {
+  constructor(blockchain, p2p) {
+    this.blockchain = blockchain;
+    this.p2p = p2p;
+  }
+
+  start() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    rl.on('line', input => {
+      const [command, ...args] = input.split(' ');
+
+      if (command === 'exit') {
+        rl.close();
+      } else if (command === 'create') {
+        const [fromAddress, toAddress, amount] = args;
+        this.blockchain.createTransaction(new Transaction(fromAddress, toAddress, amount));
+      } else if (command === 'mine') {
+        this.blockchain.minePendingTransactions();
+      } else if (command === 'connect') {
+        const [host, port] = args;
+        this.p2p.connectToPeers([{ host, port }]);
+      } else if (command === 'peers') {
+        console.log(this.p2p.sockets.map(s => s._peername));
+      } else if (command === 'chain') {
+        console.log(this.blockchain.chain);
+      }
+    });
+  }
+}
+
+const blockchain = new Blockchain();
+const p2p = new P2P(blockchain);
+const peer = new Peer(blockchain, p2p);
+
+p2p.listen();
+peer.start();
+
+class WebSocketP2P extends P2P {
+  constructor(blockchain) {
+    super(blockchain);
+    this.server = new WebSocket.Server({ port: process.env.WS_PORT || 5001 });
+    this.server.on('connection', socket => this.connectSocket(socket));
+  }
+
+  connectSocket(socket) {
+    this.sockets.push(socket);
+    this.messageHandler(socket);
+    this.sendChain(socket);
+  }
+
+  messageHandler(socket) {
+    socket.on('message', message => {
+      const data = JSON.parse(message);
+      this.blockchain.replaceChain(data);
+    });
+  }
+
+  sendChain(socket) {
+    socket.send(JSON.stringify(this.blockchain.chain));
+  }
+
+  syncChains() {
+    this.sockets.forEach(socket => this.sendChain(socket));
+  }
+}
+
+module.exports = WebSocketP2P;
