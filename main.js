@@ -63,6 +63,8 @@ class Block {
   calculateHash() {
     return crypto.createHash('sha256').update(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).digest('hex');
   }
+  
+  let block = new Block(1,"now","Some Data","someHash","ELYSCAIN");
 
   mineBlock(difficulty) {
   if (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
